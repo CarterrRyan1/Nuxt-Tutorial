@@ -32,7 +32,7 @@ Nuxt.js is a full-stack framework built on top of Vue.js that provides:
 - Basic knowledge of HTML, CSS, and JavaScript/Typescript
 
 ### Setup
-
+**Ensure you are cd into nuxt-app**
 1. **Install dependencies:**
 ```bash
 npm install
