@@ -23,6 +23,7 @@
         </div>
         <div>
             <button @click="testApi" class="rounded-sm bg-green-800 hover:bg-green-700 p-1 m-1 text-white">Test API</button>
+            <button @click="movePage" class="rounded-sm bg-blue-800 hover:bg-blue-700 p-1 m-1 text-white">Go to About Page</button>
         </div>
     </div>
 </template>
@@ -38,6 +39,6 @@ const testApi=async():Promise<void>=>{
     console.log(data);
 }
 const movePage=()=>{
-    //navigateTo('/<pageName>');
+    navigateTo('/about');
 }
 </script>
