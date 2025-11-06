@@ -5,8 +5,11 @@
     <NuxtLink to="/" class="text-blue-500 hover:underline">
       Back to Home
     </NuxtLink>
+    <UserCard name="John Doe" :age="30" email="johndoe@example.com"/>
   </div>
 </template>
 <script setup lang="ts">
+import UserCard from '~/components/userCard.vue';
+
 
 </script>
