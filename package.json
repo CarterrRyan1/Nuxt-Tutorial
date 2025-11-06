@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare",
     "test":"vitest",
     "coverage":"vitest --coverage"
+    "test":"npx playwright test --headed"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.16",
@@ -20,5 +21,7 @@
   },
   "devDependencies": {
     "vitest": "^4.0.7"
+    "@playwright/test": "^1.56.1",
+    "@types/node": "^24.10.0"
   }
 }
