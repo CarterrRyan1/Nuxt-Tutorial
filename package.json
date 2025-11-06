@@ -8,8 +8,8 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "test":"vitest",
-    "coverage":"vitest --coverage"
+    "testUnit":"vitest run",
+    "coverage":"vitest --coverage",
     "test":"npx playwright test --headed"
   },
   "dependencies": {
@@ -20,7 +20,7 @@
     "vue-router": "^4.6.3"
   },
   "devDependencies": {
-    "vitest": "^4.0.7"
+    "vitest": "^4.0.7",
     "@playwright/test": "^1.56.1",
     "@types/node": "^24.10.0"
   }
