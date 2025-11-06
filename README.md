@@ -256,7 +256,7 @@ defineProps<Props>();
 1. Create `app/composables/useCounter.ts`:
 
 ```typescript
-export const useCounter = (initialValue: number = 0) => {
+export const useCounter = (initialValue: number | 0) => {
   const count = ref(initialValue);
   
   const increment = () => count.value++;
