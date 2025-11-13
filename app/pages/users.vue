@@ -8,7 +8,7 @@
         </div>
     </div>
     <div v-else-if="!loading && users.length>0">
-        <div v-for="user in users" :key="user.id" class="border border-solid rounded-sm p-2 m-2">
+        <div @click="navigateTo(`/user/${user.id}`)" v-for="user in users" :key="user.id" class="border border-solid rounded-sm p-2 m-2">
             <h2 class="text-lg font-bold">{{ user.name }}</h2>
             <p class="text-sm">{{ user.email }}</p>
         </div>
