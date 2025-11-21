@@ -28,6 +28,7 @@
         <div>
             <counter/>
         </div>
+        <cart/>
     </div>
 </template>
 <script setup lang="ts">
