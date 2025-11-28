@@ -13,8 +13,8 @@
         <button @click="store.addItem({ id:1, name: 'sampleItem' })" class="bg-blue-500 text-white px-4 p-2 rounded block m-1">
             Add Sample Item
         </button>
-        <button @click="store.addItem({ id:2, name: 'sampleItem2' })" class="bg-blue-500 text-white px-4 p-2 rounded">
-            Add Sample Item
+        <button @click="store.addItem({ id:2, name: 'sampleItem2' })" class="bg-blue-500 text-white px-4 p-2 rounded block m-1">
+            Add Sample Item2
         </button>
         <button @click="store.clearCart()" class="bg-red-500 text-white px-4 p-2 rounded">Clear Cart</button>
     </div>
