@@ -581,59 +581,105 @@ definePageMeta({
 **Goal**: Build a complete backend API with all HTTP methods
 
 **Steps**:
-1. Create `server/api/todos/index.ts`:
+1. Create `server/utils/listStore.ts` to manage your in-memory todo list:
 
 ```typescript
-// In-memory "database"
-let todos = [
-  { id: 1, title: 'Learn Nuxt', completed: false },
-  { id: 2, title: 'Build an app', completed: false }
-];
+interface ToDoItem {
+    title: string;
+    completed: boolean;
+}
 
-export default defineEventHandler(async (event) => {
-  const method = event.method;
-  
-  if (method === 'GET') {
-    return todos;
-  }
-  
-  if (method === 'POST') {
-    const body = await readBody(event);
-    const newTodo = {
-      id: Date.now(),
-      title: body.title,
-      completed: false
-    };
-    todos.push(newTodo);
-    return newTodo;
-  }
-});
+let toDo: ToDoItem[] = [];
+
+export function addToDo(item: ToDoItem){
+    toDo.push(item);
+}
+
+export function listToDos(): ToDoItem[] {
+    return toDo;
+}
+
+export function clearToDos(): void {
+    toDo = [];
+}
+
+export function completeToDo(index: number): void {
+    if(toDo[index]){
+        toDo[index].completed = true;
+    }
+}
+
+export function unCompleteToDo(index: number): void {
+    if(toDo[index]){
+        toDo[index].completed = false;
+    }
+}
+
+export function deleteToDo(index: number): void {
+    if(toDo[index]){
+        toDo.splice(index, 1);
+    }
+}
 ```
 
-2. Create `server/api/todos/[id].ts` for individual todo operations:
+2. Create `server/api/todo.ts` to handle all CRUD operations:
 
 ```typescript
+import * as x from "../utils/listStore";
 export default defineEventHandler(async (event) => {
-  const id = parseInt(event.context.params.id);
-  const method = event.method;
-  
-  if (method === 'PUT') {
-    const body = await readBody(event);
-    const index = todos.findIndex(t => t.id === id);
-    if (index > -1) {
-      todos[index] = { ...todos[index], ...body };
-      return todos[index];
-    }
-    return createError({ statusCode: 404, message: 'Todo not found' });
+  const reqType = event.method;
+  if (reqType == "GET") {
+    return {
+      success: true,
+      todos: x.listToDos(),
+      message: "ToDos fetched successfully",
+    };
   }
-  
-  if (method === 'DELETE') {
-    const index = todos.findIndex(t => t.id === id);
-    if (index > -1) {
-      todos.splice(index, 1);
-      return { success: true };
+
+  if (reqType == "POST") {
+    const body = await readBody(event);
+    const { title } = body;
+    if (!title || typeof title !== "string") {
+      return { success: false, message: "Invalid title" };
     }
-    return createError({ statusCode: 404, message: 'Todo not found' });
+    x.addToDo({ title: title, completed: false });
+    return { success: true, message: "ToDo added successfully" };
+  }
+
+  if (reqType == "DELETE") {
+    const body = await readBody(event);
+    if(body===undefined){
+      x.clearToDos();
+      return {
+        success: true,
+        message: "All ToDos cleared",
+      };
+    }
+    else{
+      const { index } = body;
+      x.deleteToDo(index);
+      return {
+        success: true,
+        message: "ToDo deleted successfully",
+      };
+    }
+  }
+  if (reqType == "PUT") {
+    const body = await readBody(event);
+    const { index, completed } = body;
+    if (!completed) {
+      x.completeToDo(index);
+      return {
+        success: true,
+        message: "ToDo marked as completed",
+      };
+    } else {
+      x.unCompleteToDo(index);
+      return {
+        success: true,
+        message: "ToDo marked as uncompleted",
+      };
+    }
   }
 });
 ```
@@ -641,12 +687,13 @@ export default defineEventHandler(async (event) => {
 3. Build a frontend that uses all CRUD operations
 
 **Key Concepts**:
-- RESTful API design
+- Separating business logic into utility functions for better organization
 - HTTP methods (GET, POST, PUT, DELETE)
-- Request body handling
-- Error responses
+- Request body handling with proper type checking
+- Array manipulation with index-based operations
+- Centralized state management in server utilities
 
-**Success Criteria**: Full CRUD operations working from frontend to backend
+**Success Criteria**: Full CRUD operations working from frontend to backend with clean separation of concerns
 
 ---
 
